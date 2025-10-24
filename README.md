@@ -56,7 +56,7 @@ Tüm iş akışı, bir Google Colab not defterinde otomatikleştirilmiştir.
 If you use this repository in your research, please cite:  
 Bu repoyu araştırmalarınızda kullanırsanız, lütfen atıfta bulunun:
 
-Muftuoglu, T. D. (2025). *Day-Ahead Precipitation Forecasting (QPF + Alerts) for Köyceğiz: CatBoost QPF and LightGBM Alerts*. GitHub. https://github.com/tdmuftuoglu/Day-Ahead-Precipitation-Forecasting-QPF-Alert
+Muftuoglu, T. D. (2025). *High-Accuracy Day-Ahead Precipitation Forecasting with an Interpretable CatBoost Regressor and a LightGBM-Based Extreme-Event Alerting Pipeline *. GitHub. https://github.com/tdmuftuoglu/Day-Ahead-Precipitation-Forecasting-QPF-Alert
 
 ---
 
