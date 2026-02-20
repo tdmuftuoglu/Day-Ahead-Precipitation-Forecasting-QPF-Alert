@@ -1,66 +1,59 @@
-# Day-Ahead Precipitation Forecasting: QPF + Alert
-## Gün-Öncesi Yağış Tahmini: QPF + Uyarı
+Day-Ahead Precipitation Forecasting: QPF + Alert
+This repository provides an explainable two-stage machine learning pipeline for day-ahead precipitation forecasting in Köyceğiz, Turkey, utilizing a 24-year archive of NASA POWER daily meteorological data (2001–2024).
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tdmuftuoglu/Day-Ahead-Precipitation-Forecasting-QPF-Alert/blob/main/KoycegizPrecipExtended.ipynb)
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+Stage 1 (Regression): An optimized CatBoost model for Quantitative Precipitation Forecasting (QPF).
 
-This repository provides an explainable **two-stage machine-learning pipeline** for day-ahead precipitation forecasting in **Köyceğiz, Türkiye**, using **NASA POWER** daily meteorology (2001–2024). Stage-1 is a **CatBoost** regressor for quantitative precipitation forecasting (QPF); Stage-2 is a **LightGBM** classifier for extreme-event alerting based on a **95th-percentile** threshold. The pipeline preserves operational causality by using features available only up to *t−1* and reports calibrated performance (e.g., test **R² ≈ 0.837**; classification **F1 ≈ 0.752**; **AUC > 0.97**).
+Stage 2 (Classification): A LightGBM model for extreme-event alerting, rigorously defined by the 95th-percentile threshold (15.24 mm/day).
 
----
-Bu repo, **Köyceğiz (Türkiye)** için **NASA POWER** günlük meteorolojisini (2001–2024) kullanarak gün-öncesi yağış tahmini amacıyla açıklanabilir **iki aşamalı bir makine öğrenmesi hattı** sunar. **1. aşama**, nicel yağış tahmini (QPF) için **CatBoost** regresyonudur; **2. aşama**, **%95 persentil** eşiğine göre aşırı-olay uyarıları üreten **LightGBM** sınıflandırıcıdır. İş akışı, yalnızca *t−1* anına kadar erişilebilen özellikleri kullanarak **operasyonel nedenselliği** korur ve kalibre edilmiş performans sunar (örn. test **R² ≈ 0.837**; sınıflandırma **F1 ≈ 0.752**; **AUC > 0.97**).
+The pipeline strictly preserves operational causality by utilizing lagged features (t−1, t−3, t−7) and avoids data leakage. It delivers highly accurate and calibrated performance, achieving a test R² of 0.837 for regression and an F1-score of 0.752 (AUC = 0.989) for extreme event classification.
 
----
+Key Features
+High Accuracy QPF: The CatBoost regressor effectively captures daily precipitation variability, achieving an R² = 0.837 and RMSE = 2.414 mm on the hold-out test set.
 
-## Features / Projenin Özellikleri
+Robust Extreme-Event Alerts: The dedicated LightGBM classifier successfully addresses class imbalance, providing reliable early warnings with an F1-score = 0.752 and AUC = 0.989.
 
-- **High Accuracy / Yüksek Doğruluk:** Matches strong QPF baselines on hold-out tests (**R² ≈ 0.837**). / Ayrılmış testlerde güçlü QPF tabanlarına yetişen doğruluk (**R² ≈ 0.837**).
-- **Extreme-Event Alerts / Aşırı-Olay Uyarıları:** Robust detection with **LightGBM** (**F1 ≈ 0.752; AUC > 0.97**). / **LightGBM** ile sağlam tespit (**F1 ≈ 0.752; AUC > 0.97**).
-- **Explainability / Açıklanabilirlik:** **SHAP** analyses provide feature attributions and sign consistency. / **SHAP** analizleri özellik katkılarını ve işaret tutarlılığını gösterir.
-- **Reproducibility / Tekrarlanabilirlik:** Single **Google Colab** notebook reproduces all figures and tables end-to-end. / Tek bir **Google Colab** not defteri tüm şekil ve tabloları uçtan uca yeniden üretir.
+Physical Explainability: SHAP (SHapley Additive exPlanations) analysis ensures model transparency, revealing that land surface characteristics (soil moisture) and relative humidity are the primary drivers of precipitation.
 
----
+Full Reproducibility: A single Google Colab notebook provides an end-to-end automated workflow to reproduce all models, figures, and tables.
 
-## How to Reproduce the Paper / Makale Sonuçlarını Tekrarlama
+How to Reproduce the Paper
+The entire dual-task workflow is fully automated in a provided Google Colab notebook.
 
-The entire workflow is automated in a Google Colab notebook.  
-Tüm iş akışı, bir Google Colab not defterinde otomatikleştirilmiştir.
+Open in Colab: Open the provided KoycegizPrecipExtended.ipynb notebook file in Google Colab.
 
-1. **Open in Colab:** Click the **"Open in Colab"** badge at the top of this file.  
-   **Colab'de Açın:** Bu dosyanın başındaki **"Open in Colab"** butonuna tıklayın.
-2. **Run All:** In the Colab interface, navigate to **Runtime → Run all**.  
-   **Tümünü Çalıştırın:** Colab arayüzünde **Çalışma Zamanı → Tümünü çalıştır** seçeneğini seçin.
-3. **Automatic Execution / Otomatik İşlemler:** The notebook will automatically:  
-   Not defteri otomatik olarak şunları yapacaktır:
-   - Download & preprocess **NASA POWER** daily meteorology and target precipitation. / **NASA POWER** günlük meteoroloji ve hedef yağış verisini indirip ön işler.
-   - Build lag features (**t−1, t−3, t−7**), calendar terms, and rolling statistics. / Gecikmeli özellikler (**t−1, t−3, t−7**), takvim terimleri ve hareketli istatistikleri oluşturur.
-   - Train the **CatBoost** QPF regressor. / **CatBoost** QPF regresyonunu eğitir.
-   - Train & evaluate the **LightGBM** extreme-event classifier (**95th-percentile** threshold). / **LightGBM** aşırı-olay sınıflandırıcısını (**%95 persentil**) eğitir ve değerlendirir.
-   - Calibrate & export metrics (**R², RMSE, F1, AUC**) and diagnostic plots. / **(R², RMSE, F1, AUC)** metriklerini ve tanı grafikleri kalibre edip dışa aktarır.
-   - Generate **SHAP** explanations and export all figures. / **SHAP** açıklamalarını üretir ve tüm görselleri dışa aktarır.
+Run All: In the Colab interface, navigate to the top menu and select Runtime → Run all.
 
----
+Automatic Execution: The notebook will automatically execute the following steps:
 
-## Repository Contents / Repo İçeriği
+Download and preprocess the NASA POWER daily meteorology dataset (2001-2024).
 
-- `KoycegizPrecipExtended.ipynb` → One-click **Colab** notebook (end-to-end pipeline). / Uçtan uca tüm adımları içeren tek tıkla çalışan **Colab** not defteri.
-- Regression / classification metric tables. / Regresyon / sınıflandırma metrik tabloları.
-- Key performance metrics and calibration details. / Temel performans metrikleri ve kalibrasyon ayrıntıları.
-- Figures generated by the pipeline. / Kod tarafından oluşturulan görseller.
-- `LICENSE` → MIT License file. / MIT Lisans dosyası.
+Generate the 51-dimensional multivariate feature space, including 1-day, 3-day, and 7-day lagged variables.
 
----
+Perform chronological train/test splitting (80/20) to prevent information leakage.
 
-## Citation / Atıf
+Train and optimize the CatBoost QPF regressor.
 
-If you use this repository in your research, please cite:  
-Bu repoyu araştırmalarınızda kullanırsanız, lütfen atıfta bulunun:
+Train and evaluate the LightGBM extreme-event classifier using the operational 95th-percentile threshold (15.24 mm/day).
 
-Muftuoglu, T. D. (2025). High-Accuracy Day-Ahead Precipitation Forecasting with an Interpretable CatBoost Regressor and a LightGBM-Based Extreme-Event Alerting Pipeline . GitHub. https://github.com/tdmuftuoglu/Day-Ahead-Precipitation-Forecasting-QPF-Alert
+Calculate performance metrics (R², RMSE, MAE, MSE, F1, Precision, Recall, AUC).
 
----
+Generate and export all diagnostic plots, including Time Series, Scatter Plots, Seasonal R² performance, Confusion Matrices, and SHAP summary plots.
 
-## License / Lisans
+Repository Contents
+KoycegizPrecipExtended.ipynb: The Google Colab notebook containing the complete end-to-end pipeline.
 
-This project is licensed under the **MIT License**. See the [`LICENSE`](LICENSE) file for full terms.  
-Bu proje **MIT Lisansı** altında lisanslanmıştır. Tüm koşullar için [`LICENSE`](LICENSE) dosyasına bakın.
+Exported regression and classification metric tables.
+
+Key performance metrics and evaluation scripts.
+
+High-resolution figures and plots generated by the automated pipeline.
+
+LICENSE: The MIT License file.
+
+Citation
+If you use this repository or methodology in your research, please cite:
+
+Muftuoglu, T. D. (2025). High-Accuracy Day-Ahead Precipitation Forecasting with an Interpretable CatBoost Regressor and a LightGBM-Based Extreme-Event Alerting Pipeline. GitHub. https://github.com/tdmuftuoglu/Day-Ahead-Precipitation-Forecasting-QPF-Alert
+
+License
+This project is licensed under the MIT License. See the LICENSE file for full terms.
