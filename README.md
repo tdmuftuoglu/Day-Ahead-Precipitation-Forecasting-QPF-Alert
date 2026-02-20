@@ -1,3 +1,8 @@
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tdmuftuoglu/Day-Ahead-Precipitation-Forecasting-QPF-Alert/blob/main/KoycegizPrecipExtended.ipynb)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18716386.svg)](https://doi.org/10.5281/zenodo.18716386)
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 Day-Ahead Precipitation Forecasting: QPF + Alert
 Gün-Öncesi Yağış Tahmini: QPF + Uyarı
 (Köyceğiz, Turkey Case Study / Köyceğiz, Türkiye Vaka Çalışması)
